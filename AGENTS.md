@@ -10,7 +10,7 @@
 
 ## 项目结构与模块组织
 
-当前仓库包含一个 TypeScript / Node.js CLI 工具包与 AI 协作流程知识库。根 `package.json` 是唯一 CLI 工具包，`cli/` 为源码目录，不是独立 package；`templates/` 存放独立原生项目负载，当前包含 `web/nextjs` 通用模板，其依赖在仓库外生成工程中管理。
+当前仓库包含一个 TypeScript / Node.js CLI 工具包与 AI 协作流程知识库。根 `package.json` 是唯一 CLI 工具包，`cli/` 为源码目录，不是独立 package；`templates/` 存放独立原生项目负载，当前包含 `web/nextjs` 与 `fullstack/vite-nestjs` 通用模板，其依赖在仓库外生成工程中管理。
 
 ```text
 .
@@ -20,7 +20,7 @@
 ├── cli/src/                # CLI 参数交互与内部生成核心
 ├── schemas/                # JSON Schema 协议事实源
 ├── scripts/                # 模板导入、打包、隔离开发与交互增量发布
-├── templates/              # 分类/模板/files 原生工程负载，含 web/nextjs
+├── templates/              # 分类/模板/files 原生工程负载，含 web/nextjs、fullstack/vite-nestjs
 ├── tests/                  # 临时 Git 仓库、归档与 HTTP fixture 行为验证
 ├── docs/                   # 使用、贡献、开发与发布说明
 ├── forge.config.json       # 构建时固定分发源，已配置本仓库 Pages 地址
@@ -43,7 +43,7 @@
 | `cli/src/core/` | 协议、catalog、下载缓存、安全暂存、独占提交和固定安装适配器 | `rg --files cli/src/core` |
 | `schemas/` | 字段真源；生成的 `schemas.generated.ts` 不手工编辑 | `pnpm schemas:generate` |
 | `scripts/` | 导入、Git 跟踪白名单打包、仓库外开发、catalog、交互发布与预览 | `rg --files scripts` |
-| `templates/` | 原生模板，各自维护依赖；不加入根 workspace；Next.js 入口见 `templates/web/nextjs/README.md` | `rg --files templates -g template.json` |
+| `templates/` | 原生模板，各自维护依赖；不加入根 workspace；入口见 `templates/web/nextjs/README.md`、`templates/fullstack/vite-nestjs/README.md` | `rg --files templates -g template.json` |
 | `.codex/skills/` | 对外技能入口；初始化入口为 `.codex/skills/init/SKILL.md`，统一任务入口为 `.codex/skills/req-dev/SKILL.md` | `rg --files --hidden .codex/skills` |
 | `ai-workflow/agent/` | `phase-router.md` 按意图与复杂度路由到对应角色文档 | `rg --files ai-workflow/agent` |
 | `ai-workflow/skills/` | `INDEX.md` 为技能索引，具体规则以目标目录的 `SKILL.md` 及其引用为准 | `rg --files ai-workflow/skills -g SKILL.md` |

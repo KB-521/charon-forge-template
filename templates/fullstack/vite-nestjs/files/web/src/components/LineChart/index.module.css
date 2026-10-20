@@ -1,0 +1,64 @@
+.figure {
+  margin: 0;
+  min-width: 0;
+  color: var(--accent, #234e42);
+}
+.figure figcaption {
+  color: var(--ink, #182b35);
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-weight: 600;
+}
+.unit {
+  color: #596b64;
+  font-weight: 400;
+}
+.chart {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+  margin-top: 1rem;
+}
+.chart:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.chart text {
+  font: 12px sans-serif;
+}
+.grid text,
+.tick,
+.empty {
+  fill: #596b64;
+}
+.grid line {
+  stroke: #dce3df;
+  stroke-width: 1;
+}
+.line {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+.crosshair {
+  stroke: currentColor;
+  stroke-dasharray: 4 4;
+  opacity: 0.5;
+}
+.tooltip rect {
+  fill: #fff;
+  stroke: #c9d6cf;
+}
+.tooltip text {
+  fill: #182b35;
+}
+.readout {
+  display: block;
+  min-height: 1.5em;
+  color: #596b64;
+  font-size: 0.875rem;
+}

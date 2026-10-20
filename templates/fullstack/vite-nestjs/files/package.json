@@ -1,0 +1,26 @@
+{
+  "name": "__PROJECT_NAME__",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@10.18.3",
+  "engines": {
+    "node": ">=22.12.0",
+    "pnpm": "10.18.3"
+  },
+  "scripts": {
+    "dev": "pnpm --parallel --stream --filter ./web --filter ./server dev",
+    "dev:all": "pnpm dev",
+    "dev:web": "pnpm --filter ./web dev",
+    "dev:server": "pnpm --filter ./server dev",
+    "typecheck": "pnpm --filter ./web typecheck && pnpm --filter ./server typecheck",
+    "build": "pnpm --filter ./web build && pnpm --filter ./server build && node scripts/package.mjs static",
+    "start": "pnpm --filter ./server start",
+    "package": "node scripts/package.mjs package"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@nestjs/core",
+      "esbuild"
+    ]
+  }
+}

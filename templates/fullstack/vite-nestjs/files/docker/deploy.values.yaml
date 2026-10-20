@@ -1,0 +1,8 @@
+# Deployment values consumed by the team's manifest renderer.
+# Replace placeholders in the deployment repository or CI environment.
+environment:
+  application:
+    SPRING_PROFILES_ACTIVE: '@SPRING_PROFILES_ACTIVE'
+
+# Keep secrets outside the repository. The deployment system should inject them
+# from its secret store when the target application needs them.

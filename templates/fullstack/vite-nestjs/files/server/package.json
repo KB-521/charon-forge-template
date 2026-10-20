@@ -1,0 +1,34 @@
+{
+  "name": "__PROJECT_NAME__-server",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "nest start --watch",
+    "start": "node dist/main.js",
+    "build": "nest build",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "files": [
+    "dist",
+    "public",
+    "docker"
+  ],
+  "dependencies": {
+    "@nestjs/common": "^11.1.6",
+    "@nestjs/config": "^4.0.2",
+    "@nestjs/core": "^11.1.6",
+    "@nestjs/platform-express": "^11.1.6",
+    "@nestjs/serve-static": "^5.0.3",
+    "ali-oss": "^6.23.0",
+    "helmet": "^8.1.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2",
+    "yaml": "^2.8.1"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^11.0.7",
+    "@types/ali-oss": "^6.23.3",
+    "@types/node": "^22.15.21",
+    "typescript": "~5.7.2"
+  }
+}
