@@ -32,3 +32,7 @@
 - 更新固定源配置、README、`docs/releasing.md`、AGENTS 发布事实与本 SDD 文档。
 - 在 Node 22 / pnpm 10 下执行 `pnpm typecheck`、`pnpm test`、`pnpm build`，检查格式与 YAML；真实模板原生隔离验证只做必要的一次。
 - API、dispatch 和发布用 fixture/注入适配器验证，不调用外部写接口；记录一次性账号配置和未实测边界。
+
+## npm Validating 阶段的发布完成条件
+
+用户日志显示 npm publish 已返回成功及 provenance，但后置公开查询因 Validating 返回 404。用户明确要求“CLI 正常发好、没有报错就通过，不等待校验返回”。最终实现将 npm 命令退出码 0 作为 CI 发布成功；删除原后置轮询及曾拟增加的 10 分钟等待，不等待公开元数据或 tarball。发布前仍检查同版本内容；已相同跳过，冲突拒绝。抽取 publishCliPackage，验证提交成功后无第二次 registry 请求、命令异常透传、已有包跳过和冲突前置拒绝。

@@ -162,3 +162,17 @@ export async function cliPublishStatus(
     );
   return 'unchanged';
 }
+
+/** A successful npm command accepts submission; npm validation remains asynchronous. */
+export async function publishCliPackage(
+  name: string,
+  version: string,
+  localTarball: Buffer,
+  publish: () => Promise<void>,
+  fetcher: typeof fetch = fetch,
+): Promise<'submitted' | 'unchanged'> {
+  if ((await cliPublishStatus(name, version, localTarball, fetcher)) === 'unchanged')
+    return 'unchanged';
+  await publish();
+  return 'submitted';
+}

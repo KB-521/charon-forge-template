@@ -91,3 +91,17 @@
 按用户追加要求，当前项目统一为 `charon-forge-template`：本地目录 `/Users/king/Desktop/charon-forge-template`、origin `https://github.com/KB-521/charon-forge-template.git`、package.json repository、Pages channelUrl 及 Trusted Publisher Repository 均同步。设计文档中的命令和路径示例同步新名称，历史验证链接及仓库外备份路径保留并明确标注为历史记录。
 
 继续任务时发现原目录已无 .git，故未迁移旧 Git 历史；在新目录初始化 main 分支并配置 origin，未暂存、提交或推送。新 GitHub 仓库由用户自行创建；需重新启用 Pages、发布模板及绑定 npm Trusted Publisher。构建、迁移后类型检查与 npm 打包通过，新 tarball 为 dist/create-charon-forge-0.1.1.tgz。上一轮 24 项测试已通过，本轮仅迁移路径与配置，不重复测试。
+
+## npm Validating 阶段：以 CLI 退出码通过
+
+用户日志显示 create-charon-forge@0.1.2 的 npm publish 返回 0、生成 OIDC provenance 并提示包正在 processing，随后原脚本在约 25 秒的公开轮询窗口后失败。用户补充 npm 页面有 Validating，随后明确要求：CLI 正常发好且没有报错就通过，不等待后续校验返回。此要求替代先前拟增加的 10 分钟等待。
+
+最终修改 scripts/lib/release-publisher.ts 与 scripts/publish-release.ts：publishCliPackage 先保留 cliPublishStatus 的同版本内容检查；已公开且内容相同直接跳过，冲突拒绝；需要发布时只调用一次 npm publish，并以命令成功返回为 submitted。删除全部发布后 registry/tarball 查询与等待。npm 命令异常继续使发布失败。日志写明“成功提交、发布步骤通过、npm 后续校验异步处理”，没有宣称公开可见或验证完成。不增加长期 token、跳过 npm 自身校验或提升版本。
+
+验证：pnpm typecheck 通过；`pnpm exec tsx --test tests/npm-publication.test.ts tests/release.test.ts` 11 项通过，新增 4 项覆盖：registry 一直 404 但 npm 成功后仍通过且只有一次前置查询；npm 命令错误原样失败；已有相同包不调用 publish；内容冲突在 publish 前拒绝。测试使用内存 fetch/命令 fixture，没有真实 npm publish。git diff --check 通过。
+
+官方 [npm Registry API](https://api-docs.npmjs.com/) 将生命周期与公开元数据分开；status 示例包括 validating，精确状态需维护者权限。本次只读公开 0.1.2 查询返回 404，不能由此判定异步验证失败。最终实现按用户要求不查询该生命周期状态。
+
+本次仅修改维护脚本和说明，CLI 包文件未变，未发布、重跑 Actions、提交或推送。远端 npm 的后续结果由 npm 异步处理，未声称已核验。根 build/分发和 Java 原生测试与本次无关，没有重复执行。
+
+Agent：implementation-executor；skill：req-dev。按 Memory → Router → Agent → skills 索引/现有发布上下文执行，无额外技能或 worker。

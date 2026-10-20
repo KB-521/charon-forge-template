@@ -86,6 +86,8 @@ pnpm release --dry-run --history ../catalog-history
 
 Actions 串行发布，不自动取消正在运行的发布。先上传草稿全部附件并校验，再正式发布；公开附件与摘要核对通过后部署 Pages，公开指针及选中模板下载通过校验后发布 CLI。
 
+CLI 发布以 `npm publish` 命令退出码为准：退出码 0 即通过，不再轮询公开 registry 或等待 npm 的 Validating/后续校验。日志会明确表示发布请求已成功提交，不代表 npm 已完成异步处理。npm 命令本身失败仍使 CI 失败；发布前保留同版本内容比对，已有相同包跳过、内容冲突拒绝。
+
 失败时在对应 Actions 运行选择 **Re-run failed jobs**。同一运行复用批次：相同附件跳过，部分草稿补齐，正式附件有冲突则拒绝覆盖。已发布的包不回滚。重跑旧运行时，Pages 采用全部正式历史中最新的批次，防止把入口回退到旧版本。也可以重新运行 `pnpm release`，不选新模板，仅同步现有下载入口。
 
 Pages 临时 artifact 按 run ID 和 run attempt 唯一命名，上传与部署使用相同名称，避免同一运行重试时匹配到多个旧产物。采用默认 github-pages 名称的旧 workflow 若已发生重名，需要提交并推送修复后重新执行 `pnpm release`；模板已发布时只选择 CLI 即可。

@@ -13,6 +13,7 @@ import {
 import { GitHubClient, output, live, pause } from './lib/release-github.js';
 import {
   cliPublishStatus,
+  publishCliPackage,
   ensureTemplateRelease,
   verifyPublicRelease,
 } from './lib/release-publisher.js';
@@ -253,32 +254,26 @@ await execute(async () => {
         name: string;
         version: string;
       };
-      const status = await cliPublishStatus(
+      const status = await publishCliPackage(
         pkg.name,
         pkg.version,
         await readFile(state.cliTarball),
+        () =>
+          live('npm', [
+            'publish',
+            state.cliTarball!,
+            '--ignore-scripts',
+            '--access',
+            'public',
+            '--registry',
+            'https://registry.npmjs.org',
+          ]),
       );
-      if (status === 'publish')
-        await live('npm', [
-          'publish',
-          state.cliTarball,
-          '--ignore-scripts',
-          '--access',
-          'public',
-          '--registry',
-          'https://registry.npmjs.org',
-        ]);
-      else console.log('CLI 内容与已发布版本一致，跳过 npm 发布。');
-      for (let attempt = 0; ; attempt++) {
-        const status = await cliPublishStatus(
-          pkg.name,
-          pkg.version,
-          await readFile(state.cliTarball),
-        );
-        if (status === 'unchanged') break;
-        if (attempt === 5) throw new Error('npm 发布后的包暂不可见，请在 Actions 重跑以核验。');
-        await pause(5000);
-      }
+      console.log(
+        status === 'submitted'
+          ? `CLI ${pkg.name}@${pkg.version}：npm publish 已成功提交，发布步骤通过；npm 后续校验异步处理。`
+          : 'CLI 内容与已发布版本一致，跳过 npm 发布。',
+      );
     }
   } else throw new Error('未知发布阶段。');
 });
