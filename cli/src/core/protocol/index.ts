@@ -112,6 +112,17 @@ export function validateTemplate(value: unknown): Template {
     if (!/^__[A-Z][A-Z0-9_]*__$/.test(token) || !Object.hasOwn(t.inputs, key))
       fail('E_SCHEMA', 'protocol', `非法 token 映射：${token}`);
   }
+  const paths = t.render.paths ?? [];
+  if (t.render.paths && semver.lt(t.minCliVersion, '0.1.2'))
+    fail('E_SCHEMA', 'protocol', '路径渲染要求 minCliVersion >= 0.1.2。');
+  for (const path of paths) {
+    relativePath(path);
+    const tokens = path.match(/__[A-Z][A-Z0-9_]*__/g) ?? [];
+    if (!tokens.length || tokens.some((token) => !Object.hasOwn(t.render.tokens, token)))
+      fail('E_SCHEMA', 'protocol', `路径须使用已声明的 token：${path}`);
+    if (paths.some((other) => other !== path && path.startsWith(`${other}/`)))
+      fail('E_SCHEMA', 'protocol', `路径渲染规则不能嵌套：${path}`);
+  }
   if (t.install.adapter === 'node' && !t.install.packageManagers?.length)
     fail('E_SCHEMA', 'protocol', 'Node 安装适配器须声明 packageManagers。');
   for (const r of t.requirements)

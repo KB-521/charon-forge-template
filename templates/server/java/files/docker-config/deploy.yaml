@@ -1,0 +1,52 @@
+# Example only. Replace image and provision the referenced Secret before applying.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: __PROJECT_NAME__-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: __PROJECT_NAME__-web
+  template:
+    metadata:
+      labels:
+        app: __PROJECT_NAME__-web
+    spec:
+      enableServiceLinks: false
+      containers:
+        - name: web
+          image: registry.example.com/team/__PROJECT_NAME__-web:replace
+          ports:
+            - name: http
+              containerPort: 7001
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+          envFrom:
+            - secretRef:
+                name: __PROJECT_NAME__-web-runtime
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+          livenessProbe:
+            httpGet:
+              path: /check
+              port: http
+            initialDelaySeconds: 30
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 10001
+            runAsGroup: 10001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: __PROJECT_NAME__-web
+spec:
+  selector:
+    app: __PROJECT_NAME__-web
+  ports:
+    - port: 80
+      targetPort: http

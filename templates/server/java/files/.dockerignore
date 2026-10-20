@@ -1,0 +1,7 @@
+.git
+**/logs
+**/log
+**/*.log
+.env*
+**/.env*
+.idea

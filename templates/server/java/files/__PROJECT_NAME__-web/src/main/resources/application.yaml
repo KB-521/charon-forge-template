@@ -1,0 +1,28 @@
+spring:
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local}
+  application:
+    name: __PROJECT_NAME__-web
+  log:
+    path: ${LOG_DIR:logs/${spring.application.name}}
+server:
+  port: ${PORT:7001}
+  tomcat:
+    basedir: ${java.io.tmpdir}/${spring.application.name}-tomcat
+    accesslog:
+      enabled: true
+      directory: ${spring.log.path}/access
+      pattern: '%h %t "%m %U %H" %s %D'
+      max-days: 14
+mybatis:
+  mapper-locations: classpath*:mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      show-details: never
