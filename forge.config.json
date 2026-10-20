@@ -1,0 +1,4 @@
+{
+  "channelUrl": "https://kb-521.github.io/charon-forge-template/stable-v1.json",
+  "allowedHosts": ["kb-521.github.io", "github.com", "release-assets.githubusercontent.com"]
+}

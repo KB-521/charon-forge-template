@@ -1,0 +1,28 @@
+name: Prepare CLI release
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: prepare-cli-release
+  cancel-in-progress: false
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build
+      - run: pnpm verify:distribution
+      - run: npm pack --ignore-scripts --pack-destination dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cli-package-preview
+          path: dist/*.tgz

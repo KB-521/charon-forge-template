@@ -1,0 +1,63 @@
+{
+  "name": "create-charon-forge",
+  "version": "0.1.1",
+  "description": "A metadata-driven project template generator",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KB-521/charon-forge-template.git"
+  },
+  "type": "module",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "packageManager": "pnpm@10.18.3",
+  "bin": {
+    "create-charon-forge": "dist/cli/index.js"
+  },
+  "files": [
+    "dist/cli",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "node scripts/generate-schemas.mjs && node esbuild.config.mjs",
+    "dev": "tsx cli/src/index.ts",
+    "typecheck": "node scripts/generate-schemas.mjs && tsc --noEmit",
+    "test": "tsx --test tests/*.test.ts",
+    "templates:validate": "tsx scripts/validate-templates.ts",
+    "templates:pack": "tsx scripts/pack-templates.ts",
+    "template:dev": "tsx scripts/prepare-template-dev.ts",
+    "catalog:build": "tsx scripts/build-catalog.ts",
+    "verify:templates": "tsx scripts/verify-templates.ts",
+    "verify:distribution": "tsx scripts/verify-distribution.ts",
+    "release:prepare": "tsx scripts/prepare-release.ts",
+    "release": "tsx scripts/release.ts",
+    "prepack": "pnpm build",
+    "schemas:generate": "node scripts/generate-schemas.mjs",
+    "template:import": "tsx scripts/import-template.ts"
+  },
+  "dependencies": {
+    "@clack/prompts": "1.8.1",
+    "ajv": "8.20.0",
+    "commander": "15.0.0",
+    "picomatch": "4.0.7",
+    "semver": "7.8.5",
+    "tar-stream": "3.2.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "@types/picomatch": "4.0.3",
+    "@types/semver": "7.8.0",
+    "@types/tar-stream": "3.1.5",
+    "esbuild": "0.28.2",
+    "json-schema-to-ts": "3.1.1",
+    "prettier": "3.9.10",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
+}

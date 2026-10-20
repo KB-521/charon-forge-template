@@ -1,0 +1,49 @@
+name: Prepare template release
+on:
+  workflow_dispatch:
+    inputs:
+      catalog_version:
+        description: YYYY.MM.DD.sequence
+        required: true
+      base_url:
+        description: Future immutable HTTPS asset directory
+        required: true
+      first_release:
+        description: Explicit first release with no published history
+        type: boolean
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: prepare-template-release
+  cancel-in-progress: false
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm templates:validate
+      - run: pnpm verify:templates
+      - run: pnpm templates:pack
+      - name: Download every formal template catalog
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/fetch-release-history.mjs
+      - name: Prepare immutable assets and channel preview
+        env:
+          CATALOG_VERSION: ${{ inputs.catalog_version }}
+          BASE_URL: ${{ inputs.base_url }}
+          FIRST_RELEASE: ${{ inputs.first_release }}
+        run: node scripts/run-release-prepare.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: template-release-preview
+          path: dist/release/

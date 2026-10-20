@@ -1,0 +1,57 @@
+{
+  "name": "__PROJECT_NAME__",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.18.3",
+  "engines": {
+    "node": ">=22.12.0",
+    "pnpm": ">=10.18.3 <11"
+  },
+  "scripts": {
+    "dev": "cross-env APP_ENV=local next dev --webpack",
+    "dev:test": "cross-env APP_ENV=test next dev --webpack",
+    "build": "cross-env APP_ENV=production next build --webpack",
+    "build:local": "cross-env APP_ENV=local next build --webpack",
+    "build:test": "cross-env APP_ENV=test next build --webpack",
+    "build:ci": "cross-env APP_ENV=ci next build --webpack",
+    "build:production": "cross-env APP_ENV=production next build --webpack",
+    "start": "cross-env APP_ENV=production next start",
+    "start:test": "cross-env APP_ENV=test next start",
+    "start:local": "cross-env APP_ENV=local next start",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "next typegen && tsc --noEmit",
+    "lint:fix": "eslint . --fix"
+  },
+  "dependencies": {
+    "@ant-design/cssinjs": "1.24.0",
+    "@ant-design/nextjs-registry": "1.2.0",
+    "@ant-design/v5-patch-for-react-19": "1.0.3",
+    "antd": "5.24.5",
+    "axios": "1.20.0",
+    "axios-cache-interceptor": "1.5.3",
+    "clsx": "2.1.1",
+    "cross-env": "7.0.3",
+    "next": "16.2.2",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "tailwind-merge": "2.6.0"
+  },
+  "devDependencies": {
+    "@charonix/eslint-config": "1.2.0",
+    "@types/node": "22.10.2",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "autoprefixer": "10.4.19",
+    "eslint": "9.39.1",
+    "postcss": "8.4.38",
+    "tailwindcss": "3.4.4",
+    "typescript": "5.3.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "sharp",
+      "unrs-resolver"
+    ]
+  }
+}

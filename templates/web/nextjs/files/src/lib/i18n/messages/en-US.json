@@ -1,0 +1,11 @@
+{
+  "common.confirm": "Confirm",
+  "common.cancel": "Cancel",
+  "common.empty": "No data",
+  "common.requestFailed": "Request failed. Please try again.",
+  "common.copySuccess": "Copied",
+  "common.collapse": "Collapse",
+  "locale.switchLanguage": "Switch language",
+  "locale.simplifiedChinese": "简体中文",
+  "locale.english": "English"
+}

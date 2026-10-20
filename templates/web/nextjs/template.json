@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "nextjs",
+  "version": "0.1.0",
+  "name": "Next.js + Ant Design",
+  "category": "web",
+  "layout": "single",
+  "tags": ["nextjs", "react", "typescript", "tailwindcss", "antd"],
+  "minCliVersion": "0.1.0",
+  "source": "files",
+  "inputs": {
+    "projectName": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "render": {
+    "tokens": {
+      "__PROJECT_NAME__": "projectName"
+    },
+    "files": ["package.json", "README.md"]
+  },
+  "publish": {
+    "include": ["**/*"]
+  },
+  "requirements": [
+    { "tool": "node", "range": ">=22.12.0", "phase": "install" },
+    { "tool": "pnpm", "range": "10.18.3", "phase": "install" },
+    { "tool": "node", "range": ">=22.12.0", "phase": "verify" },
+    { "tool": "pnpm", "range": "10.18.3", "phase": "verify" }
+  ],
+  "install": {
+    "adapter": "node",
+    "packageManagers": ["pnpm"]
+  },
+  "verify": [
+    { "argv": ["pnpm", "install", "--frozen-lockfile"] },
+    { "argv": ["pnpm", "lint"] },
+    { "argv": ["pnpm", "typecheck"] },
+    { "argv": ["pnpm", "build"] }
+  ]
+}

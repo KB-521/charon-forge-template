@@ -1,0 +1,49 @@
+# 仓库规范
+
+> 本文件由初始化流程生成或更新。团队偏好、个人偏好和阶段性执行约定统一写入 `ai-workflow/memory/`。
+
+## Memory 入口
+- 执行任务前必须读取 `ai-workflow/memory/INDEX.md`，并按索引读取列出的 memory 文件。
+- `AGENTS.md` 只维护可从仓库事实推导出的长期协作规则。
+- 初始化流程不得覆盖、删除或合并 `ai-workflow/memory/` 中的手写内容。
+
+## 项目结构与模块组织
+```text
+.
+└── <path>/                 # <作用说明>
+```
+
+## 模块职责与常见下钻
+| 模块 | 职责 | 关键入口 | 常见下钻 |
+| --- | --- | --- | --- |
+| `<module>` | <长期职责> | `<path>` | `<rg/find command>` |
+
+## 构建、测试与开发命令
+- 在 `<path>/` 下执行 `<command>`: <作用说明>
+
+## 子项目路由（混合项目根目录必选）
+- 修改 `<subproject>/`：先读取 `<subproject>/AGENTS.md`，并同时遵守 `ai-workflow/memory/` 中适用的偏好与约定。
+- 修改 `ai-workflow/` 或 `.codex/skills/`：按对应 `SKILL.md`、`ai-workflow/skills/INDEX.md` 与 `ai-workflow/wiki/**/INDEX.md` 执行；不生成 `ai-workflow/AGENTS.md`。
+
+## 编码规范与命名约定
+- <缩进/引号/命名/导入规则>
+- <lint/format 工具>
+
+## 前端约定（如适用）
+- <路由、组件、状态、API 目录指针>
+
+## 移动端约定（如适用）
+- <路由、组件、状态、原生工程与发布配置指针>
+
+## 后端约定（如适用）
+- <模块、配置、启动入口、接口层/服务层/数据层指针>
+
+## ai-workflow 流程约定（如适用）
+- <SDD、skills、wiki 与任务拆分规则>
+- 技术导航默认由各代码子项目 `AGENTS.md` 承接；不要默认生成 `ai-workflow/wiki/<project-domain>/tech/*`。
+
+## 配置与环境（如适用）
+- <application*.yaml / .env / 日志配置位置>
+
+## 安全与配置提示
+- <敏感信息与环境变量注意事项>

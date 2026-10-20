@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  background: #f7f6f2;
+}
+
+body {
+  margin: 0;
+  color: #25251f;
+  font-family: 'Helvetica Neue', 'Noto Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  color: #25251f;
+  background: #f0c8b7;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid #c34b23;
+  outline-offset: 5px;
+}

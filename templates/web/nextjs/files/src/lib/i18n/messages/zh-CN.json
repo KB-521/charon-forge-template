@@ -1,0 +1,11 @@
+{
+  "common.confirm": "确认",
+  "common.cancel": "取消",
+  "common.empty": "暂无数据",
+  "common.requestFailed": "请求失败，请稍后重试",
+  "common.copySuccess": "复制成功",
+  "common.collapse": "收起",
+  "locale.switchLanguage": "切换语言",
+  "locale.simplifiedChinese": "简体中文",
+  "locale.english": "English"
+}
