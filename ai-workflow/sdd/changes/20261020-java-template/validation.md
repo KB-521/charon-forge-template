@@ -54,3 +54,14 @@ Memory INDEX/TEAM/LOCAL、phase-router 和 Agent 已加载；global wiki 对应�
 Agent：初次 requirement-manager → design-manager → implementation-executor；命名与公司框架清理由 implementation-executor 串行执行。
 
 Skills：初次 req-dev、req-create、brainstorming、writing-plans、security-auditor；本次明确补充使用 req-dev、brainstorming、writing-plans。无 worker，未提交发布。
+
+## 发布 runner 的 JDK 修复
+
+用户报告正式 prepare 在 java@0.1.0 的原生验证被 JDK 8 检查拦截。原因是 release.yml 仅准备 Node/npm，没有为 Java 模板配置 JDK；模板脚本正确识别了不匹配的 Maven 运行环境。
+
+- 修复：release.yml 在 prepare 前增加 actions/setup-java@v4，使用 Temurin 8；条件为 `contains(fromJSON(inputs.plan).templates.*.id, 'java')`，匹配实际 ReleasePlan.templates[].id。没有选择 Java 的发布不执行该步骤，模板 JDK 检查继续保留。
+- YAML/执行顺序检查通过；上游校验和核验后的临时 actionlint v1.7.12 校验正式 workflow 通过（shellcheck/pyflakes 关闭，表达式/结构检查启用）。
+- 本机使用 Zulu JDK 8、Maven 3.9.14，重新执行日志中的完整命令 `pnpm exec tsx scripts/verify-templates.ts --template java --template-version 0.1.0 --native` 成功：5 项测试、Boot repackage、隔离生成和防污染均通过。未改动或运行基础 files。
+- 未运行远端正式 prepare、发布、提交或推送。需要提交并推送修复后重新发起 pnpm release；旧运行的 Re-run 不会加载新 workflow。远端 Temurin 环境的最终结果以新 Actions 运行为准。
+- 参考：[setup-java v4 官方说明](https://github.com/actions/setup-java/tree/v4)、[GitHub 表达式 contains / fromJSON / 对象过滤](https://docs.github.com/en/actions/reference/workflows-and-actions/expressions)。
+- Agent：implementation-executor；skill：req-dev；Memory 与 Agent 路由已加载，按 skills 索引没有额外命中流程 skill。

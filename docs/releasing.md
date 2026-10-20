@@ -63,6 +63,7 @@ npm Trusted Publisher 要求 npm 11.5.1+、Node 22.14+；正式 workflow 使用 
 - 默认勾选新增、有变化的模板；无变化模板显示跳过。可取消暂不发布的项。
 - 已手工提升版本时默认使用该版本，否则建议 patch；也可选择 minor、major 或指定版本。发布版本只写入归档的 `template.json`，不自动回写源码或创建提交；后续以正式历史继续计算版本。
 - 选中模板逐个隔离执行其 verify 命令，全部通过后发布。其它模板保留原 URL、摘要与历史版本，新 catalog 仍包含完整列表。
+- 正式 workflow 在发布计划包含 java 模板时先通过 actions/setup-java 配置 Temurin JDK 8，再执行原生 Maven 验证；CLI 与 Node 模板继续使用 Node 22。模板的 JDK 检查保留，用于发现实际 Maven 运行环境不匹配。
 - 只更新模板无需重新发布 CLI。CLI 使用 package.json 的版本；已发布且包内容相同则跳过，内容冲突必须先提升 CLI 版本、提交并推送，再重试。若只更新模板，请直接选择“模板”。
 
 批次、附件 URL、首次发行判断和完整历史下载由程序处理，无需手填。新的统一 workflow 会正式外发；原 `release-templates.yml`、`release-cli.yml` 仍只生成预览。
