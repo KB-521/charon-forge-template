@@ -1,6 +1,6 @@
 {
   "name": "create-charon-forge",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A metadata-driven project template generator",
   "repository": {
     "type": "git",

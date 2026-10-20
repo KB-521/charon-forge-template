@@ -183,6 +183,20 @@ export async function stageProject(
     );
     const renderedFiles = new Set(template.render.files);
     const usedTokens = new Set<string>();
+    const pathRules = template.render.paths ?? [];
+    const usedPaths = new Set<string>();
+    const sourceFiles = new Set<string>();
+    const outputPaths = new Map<string, { spelling: string; directory: boolean }>();
+    const renderText = (text: string, path: string): string => {
+      for (const [token, key] of Object.entries(template.render.tokens)) {
+        if (text.includes(token)) usedTokens.add(token);
+        if (text.includes(token) && inputs[key] === undefined)
+          fail('E_RENDER', 'render', `缺少 token 输入：${key}`);
+        text = text.split(token).join(inputs[key] ?? '');
+      }
+      if (/__[A-Z][A-Z0-9_]*__/.test(text)) fail('E_RENDER', 'render', `残留 token：${path}`);
+      return text;
+    };
     const files: Stage['files'] = [];
     for (const [name, entry] of entries) {
       if (name === 'template.json') continue;
@@ -190,7 +204,27 @@ export async function stageProject(
       relativePath(path);
       if (forbiddenPath(path))
         fail('E_ARCHIVE', 'extract', `模板包包含运行产物或保留文件：${path}`);
+      const rule = pathRules.find((rule) => path === rule || path.startsWith(`${rule}/`));
+      // Render only the declared prefix. Tokens in undeclared descendants still fail.
+      const outputPath = rule ? renderText(rule, rule) + path.slice(rule.length) : path;
+      if (/__[A-Z][A-Z0-9_]*__/.test(outputPath))
+        fail('E_RENDER', 'render', `路径 token 未列入 render.paths：${path}`);
+      relativePath(outputPath);
+      if (forbiddenPath(outputPath))
+        fail('E_ARCHIVE', 'render', `渲染路径包含运行产物或保留文件：${outputPath}`);
+      const parts = outputPath.split('/');
+      for (let index = 1; index <= parts.length; index++) {
+        const prefix = parts.slice(0, index).join('/');
+        const key = prefix.normalize('NFC').toLowerCase();
+        const directory = index < parts.length || entry.directory;
+        const previous = outputPaths.get(key);
+        if (previous && (previous.spelling !== prefix || !previous.directory || !directory))
+          fail('E_RENDER', 'render', `渲染路径冲突：${outputPath}`);
+        outputPaths.set(key, { spelling: prefix, directory });
+      }
       if (entry.directory) continue;
+      if (rule) usedPaths.add(rule);
+      sourceFiles.add(path);
       let bytes = entry.data!;
       const hasToken = Object.keys(template.render.tokens).some((token) =>
         bytes.includes(Buffer.from(token)),
@@ -204,23 +238,17 @@ export async function stageProject(
         }
         if (bytes.includes(0) || bytes.subarray(0, 3).equals(Buffer.from([239, 187, 191])))
           fail('E_RENDER', 'render', `二进制或 BOM 渲染文件：${path}`);
-        for (const [token, key] of Object.entries(template.render.tokens)) {
-          if (text.includes(token)) usedTokens.add(token);
-          if (text.includes(token) && inputs[key] === undefined)
-            fail('E_RENDER', 'render', `缺少 token 输入：${key}`);
-          text = text.split(token).join(inputs[key] ?? '');
-        }
-        if (/__[A-Z][A-Z0-9_]*__/.test(text)) fail('E_RENDER', 'render', `残留 token：${path}`);
-        bytes = Buffer.from(text);
+        bytes = Buffer.from(renderText(text, path));
       } else if (hasToken) fail('E_RENDER', 'render', `token 文件未列入 render.files：${path}`);
-      const destination = join(stage, path);
+      const destination = join(stage, outputPath);
       await mkdir(dirname(destination), { recursive: true });
       await writeFile(destination, bytes, { flag: 'wx', mode: entry.mode });
-      files.push({ path, mode: entry.mode });
+      files.push({ path: outputPath, mode: entry.mode });
     }
     for (const path of renderedFiles)
-      if (!files.some((f) => f.path === path))
-        fail('E_RENDER', 'render', `渲染文件不存在：${path}`);
+      if (!sourceFiles.has(path)) fail('E_RENDER', 'render', `渲染文件不存在：${path}`);
+    for (const path of pathRules)
+      if (!usedPaths.has(path)) fail('E_RENDER', 'render', `渲染路径不存在：${path}`);
     for (const token of Object.keys(template.render.tokens))
       if (!usedTokens.has(token)) fail('E_RENDER', 'render', `未使用的 token 映射：${token}`);
     if (!files.length) fail('E_ARCHIVE', 'extract', '模板 files/ 不能为空。');

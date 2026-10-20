@@ -1,0 +1,15 @@
+target/
+logs/
+log/
+*.log
+*.jar
+*.class
+.flattened-pom.xml
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+.env
+.env.*
+.DS_Store

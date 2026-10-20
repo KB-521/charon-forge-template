@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "id": "java",
+  "version": "0.1.0",
+  "name": "Java 8 + Spring Boot",
+  "category": "server",
+  "layout": "monorepo",
+  "tags": ["java", "maven", "spring-boot", "mybatis", "mysql"],
+  "minCliVersion": "0.1.2",
+  "source": "files",
+  "inputs": {
+    "projectName": {
+      "type": "string",
+      "required": true,
+      "maxLength": 59
+    }
+  },
+  "render": {
+    "tokens": {
+      "__PROJECT_NAME__": "projectName"
+    },
+    "files": [
+      "pom.xml",
+      "__PROJECT_NAME__-commons/pom.xml",
+      "__PROJECT_NAME__-domain/pom.xml",
+      "__PROJECT_NAME__-dal/pom.xml",
+      "__PROJECT_NAME__-biz/pom.xml",
+      "__PROJECT_NAME__-web/pom.xml",
+      "__PROJECT_NAME__-server/pom.xml",
+      "__PROJECT_NAME__-web/src/main/resources/application.yaml",
+      "__PROJECT_NAME__-server/src/main/resources/application.yaml",
+      "README.md",
+      "docker-config/Dockerfile",
+      "docker-config/build.sh",
+      "docker-config/deploy.yaml",
+      "docker-config/__PROJECT_NAME__-web-ingress.yaml"
+    ],
+    "paths": [
+      "__PROJECT_NAME__-commons",
+      "__PROJECT_NAME__-domain",
+      "__PROJECT_NAME__-dal",
+      "__PROJECT_NAME__-biz",
+      "__PROJECT_NAME__-web",
+      "__PROJECT_NAME__-server",
+      "docker-config/__PROJECT_NAME__-web-ingress.yaml"
+    ]
+  },
+  "publish": {
+    "include": ["**/*"]
+  },
+  "requirements": [
+    {
+      "tool": "java",
+      "range": ">=8.0.0 <9.0.0",
+      "phase": "install"
+    },
+    {
+      "tool": "mvn",
+      "range": ">=3.6.3",
+      "phase": "install"
+    },
+    {
+      "tool": "java",
+      "range": ">=8.0.0 <9.0.0",
+      "phase": "verify"
+    },
+    {
+      "tool": "mvn",
+      "range": ">=3.6.3",
+      "phase": "verify"
+    }
+  ],
+  "install": {
+    "adapter": "manual"
+  },
+  "verify": [
+    {
+      "argv": ["sh", "scripts/verify.sh"]
+    }
+  ]
+}

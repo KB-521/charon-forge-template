@@ -31,10 +31,10 @@ pnpm release
 pnpm build
 npm pack --ignore-scripts --pack-destination dist
 npm login --registry=https://registry.npmjs.org
-npm publish ./dist/create-charon-forge-0.1.1.tgz --ignore-scripts --access public --registry=https://registry.npmjs.org
+npm publish ./dist/create-charon-forge-0.1.2.tgz --ignore-scripts --access public --registry=https://registry.npmjs.org
 ```
 
-以上文件名对应当前 package.json 的 0.1.1；版本变更时使用实际生成的文件名。发布的是构建后的真实 tarball。首次版本已存在时不要重复发布或覆盖，先查看 `npm view create-charon-forge version --registry=https://registry.npmjs.org`。npm 审核和索引更新可能延迟，等待包可见后再继续。
+以上文件名对应当前 package.json 的 0.1.2；版本变更时使用实际生成的文件名。发布的是构建后的真实 tarball。首次版本已存在时不要重复发布或覆盖，先查看 `npm view create-charon-forge version --registry=https://registry.npmjs.org`。npm 审核和索引更新可能延迟，等待包可见后再继续。
 
 打开 npm 上 `create-charon-forge` 的 Settings → Trusted Publisher，选择 GitHub Actions，填写：
 

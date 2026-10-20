@@ -130,6 +130,9 @@ export async function packTemplate(
   for (const path of template.render.files)
     if (!files.some((f) => f.path === `files/${path}`))
       fail('E_SCHEMA', 'pack', `渲染文件未包含在发布集合：${path}`);
+  for (const path of template.render.paths ?? [])
+    if (!files.some((f) => f.path === `files/${path}` || f.path.startsWith(`files/${path}/`)))
+      fail('E_SCHEMA', 'pack', `渲染路径未包含在发布集合：${path}`);
   const digest = await writeArchive(output, files);
   return {
     template,

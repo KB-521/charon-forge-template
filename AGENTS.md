@@ -10,7 +10,7 @@
 
 ## 项目结构与模块组织
 
-当前仓库包含一个 TypeScript / Node.js CLI 工具包与 AI 协作流程知识库。根 `package.json` 是唯一 CLI 工具包，`cli/` 为源码目录，不是独立 package；`templates/` 存放独立原生项目负载，当前包含 `web/nextjs` 与 `fullstack/vite-nestjs` 通用模板，其依赖在仓库外生成工程中管理。
+当前仓库包含一个 TypeScript / Node.js CLI 工具包与 AI 协作流程知识库。根 `package.json` 是唯一 CLI 工具包，`cli/` 为源码目录，不是独立 package；`templates/` 存放独立原生项目负载，当前包含 `web/nextjs`、`fullstack/vite-nestjs` 与 `server/java` 模板，其依赖在仓库外生成工程中管理。
 
 ```text
 .
@@ -20,7 +20,7 @@
 ├── cli/src/                # CLI 参数交互与内部生成核心
 ├── schemas/                # JSON Schema 协议事实源
 ├── scripts/                # 模板导入、打包、隔离开发与交互增量发布
-├── templates/              # 分类/模板/files 原生工程负载，含 web/nextjs、fullstack/vite-nestjs
+├── templates/              # 分类/模板/files 原生工程负载，含 web/nextjs、fullstack/vite-nestjs、server/java
 ├── tests/                  # 临时 Git 仓库、归档与 HTTP fixture 行为验证
 ├── docs/                   # 使用、贡献、开发与发布说明
 ├── forge.config.json       # 构建时固定分发源，已配置本仓库 Pages 地址
@@ -43,7 +43,7 @@
 | `cli/src/core/` | 协议、catalog、下载缓存、安全暂存、独占提交和固定安装适配器 | `rg --files cli/src/core` |
 | `schemas/` | 字段真源；生成的 `schemas.generated.ts` 不手工编辑 | `pnpm schemas:generate` |
 | `scripts/` | 导入、Git 跟踪白名单打包、仓库外开发、catalog、交互发布与预览 | `rg --files scripts` |
-| `templates/` | 原生模板，各自维护依赖；不加入根 workspace；入口见 `templates/web/nextjs/README.md`、`templates/fullstack/vite-nestjs/README.md` | `rg --files templates -g template.json` |
+| `templates/` | 原生模板，各自维护依赖；不加入根 workspace；入口见 `templates/web/nextjs/README.md`、`templates/fullstack/vite-nestjs/README.md`、`templates/server/java/README.md` | `rg --files templates -g template.json` |
 | `.codex/skills/` | 对外技能入口；初始化入口为 `.codex/skills/init/SKILL.md`，统一任务入口为 `.codex/skills/req-dev/SKILL.md` | `rg --files --hidden .codex/skills` |
 | `ai-workflow/agent/` | `phase-router.md` 按意图与复杂度路由到对应角色文档 | `rg --files ai-workflow/agent` |
 | `ai-workflow/skills/` | `INDEX.md` 为技能索引，具体规则以目标目录的 `SKILL.md` 及其引用为准 | `rg --files ai-workflow/skills -g SKILL.md` |
@@ -92,6 +92,8 @@
 - 新增或调整技能时，按 `common/init-skills/SKILL.md` 维护技能索引；仅初始化 agent 时不额外刷新其它产物。
 - CLI 使用 TypeScript 严格模式、ESM 与 Prettier；模块通过 `.js` 扩展名引用。schema 类型从 JSON 真源生成，工具源码和模板负载分开验证。
 - 不在模板 `files/` 内安装、运行或自动回写；已跟踪文件与 include 构成发布输入，运行产物禁止项独立于 `.gitignore` 检查。
+- 模板可通过 `render.paths` 显式声明随输入命名的文件/目录，要求 CLI 0.1.2+；内容渲染清单仍写基础模板原路径。
+- Java 模板使用公开 Spring Boot parent 与公共 MyBatis/MySQL 依赖，使用 manual 安装适配器；原生构建需要 Maven 实际运行在 JDK 8 上，默认 local 不连接数据库，H2 仅用于测试。构建与运行边界见模板 README。
 - Next.js 模板的 `docker-config/.env.dev`、`.env.prod` 是受控的公开运行时配置，根 `.gitignore` 显式放行；其内容会注入浏览器，不得放入敏感信息。其它真实环境文件仍按安全边界排除。
 - 当前仓库不包含实际应用服务或数据库；模板分发的发布与部署验证记录见 `ai-workflow/sdd/INDEX.md` 及对应变更包。引入实际代码子项目后再更新对应技术导航，不把模板示例写成现有应用。
 

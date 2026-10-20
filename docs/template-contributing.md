@@ -30,7 +30,21 @@ pnpm template:import --source ../existing-project --id web-my-app --category web
 }
 ```
 
-用 `render.tokens` 声明例如 `"__PROJECT_NAME__": "projectName"`，并把实际包含该 token 的精确文件路径列入 `render.files`。只替换显式 UTF-8 文本，不推测源码/JSON 普通括号、不重命名路径。声明但未使用的 token、残留 token 或不在文件白名单的 token 都会报错。输入当前限公开标识符，小写字母开头、数字/单短横线，默认上限 63 位；未来自由文本需要额外编码策略。
+用 `render.tokens` 声明例如 `"__PROJECT_NAME__": "projectName"`，并把实际包含该 token 的精确文件路径列入 `render.files`。只替换显式 UTF-8 文本，不推测源码/JSON 普通括号。文件内容的白名单路径以基础模板中的原始路径为准。声明但未使用的 token、残留 token 或不在文件白名单的 token 都会报错。输入当前限公开标识符，小写字母开头、数字/单短横线，默认上限 63 位；未来自由文本需要额外编码策略。
+
+需要随项目名命名文件或模块目录时，CLI 0.1.2+ 支持可选的 `render.paths`，并要求 `minCliVersion` 至少为 0.1.2。例如：
+
+```json
+{
+  "render": {
+    "tokens": { "__PROJECT_NAME__": "projectName" },
+    "paths": ["__PROJECT_NAME__-biz", "docker-config/__PROJECT_NAME__-web-ingress.yaml"],
+    "files": ["pom.xml", "__PROJECT_NAME__-biz/pom.xml"]
+  }
+}
+```
+
+`paths` 声明精确文件路径或目录前缀；目录规则覆盖其下所有普通文件，规则不能嵌套，不支持 glob。只替换声明前缀中的 token，后缀里的其它 token 必须通过独立且不重叠的路径规则表达。规则必须命中发布集合；未声明的路径 token、未解析的 token、安全/保留路径或渲染后大小写/Unicode/文件目录冲突都会拒绝生成，并清理私有暂存目录。最终暂存文件清单与提交使用渲染后的路径，二进制内容与执行位保持不变。已有模板不声明 paths 时保持原行为。
 
 导入后必须检查：
 

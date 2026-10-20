@@ -138,6 +138,16 @@ export const templateSchema = {
             "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
           },
           "uniqueItems": true
+        },
+        "paths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+          },
+          "uniqueItems": true
         }
       },
       "required": [
