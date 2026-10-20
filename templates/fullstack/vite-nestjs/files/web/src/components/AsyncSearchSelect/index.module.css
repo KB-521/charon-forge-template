@@ -1,0 +1,82 @@
+.root {
+  position: relative;
+  min-width: 0;
+}
+.label {
+  display: block;
+  margin-bottom: 0.6rem;
+  font-weight: 600;
+}
+.control {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #a4b5ab;
+  border-radius: 0.375rem;
+}
+.control:focus-within {
+  outline: 2px solid var(--accent, #234e42);
+  outline-offset: 2px;
+}
+.control input {
+  min-width: 0;
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font: inherit;
+  padding: 0.8rem;
+  color: #182b35;
+}
+.control .clear {
+  color: #596b64;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+  padding: 0.6rem 0.9rem;
+}
+.clear:focus-visible {
+  outline: 2px solid var(--accent, #234e42);
+}
+.popover {
+  position: absolute;
+  z-index: 10;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 0.4rem;
+  border: 1px solid #c9d6cf;
+  background: #fff;
+  border-radius: 0.375rem;
+  box-shadow: 0 10px 24px #182b3512;
+}
+.list {
+  padding: 0.3rem;
+  margin: 0;
+  list-style: none;
+  max-height: 16rem;
+  overflow-y: auto;
+}
+.option {
+  cursor: pointer;
+  border-radius: 0.2rem;
+  padding: 0.7rem;
+  display: grid;
+  gap: 0.2rem;
+  color: #182b35;
+}
+.option small,
+.status {
+  color: #596b64;
+}
+.option.active {
+  background: #edf3ee;
+}
+.option[aria-selected='true'] {
+  font-weight: 600;
+}
+.status {
+  margin: 0.8rem;
+  font-size: 0.9rem;
+}

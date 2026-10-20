@@ -1,0 +1,90 @@
+/*
+ * Generic pipeline for this template.
+ * Configure repository URLs, credentials, registry, cluster and manifest path
+ * in the Jenkins job or shared library before enabling the Deploy stage.
+ */
+pipeline {
+    agent {
+        node {
+            label 'docker'
+        }
+    }
+
+    parameters {
+        string(name: 'BRANCH', defaultValue: 'main', trim: true, description: 'Source branch to build')
+        string(name: 'MODULE_NAME', defaultValue: '__PROJECT_NAME__', trim: true, description: 'Image and deployment module name')
+        string(name: 'SPRING_PROFILES_ACTIVE', defaultValue: 'dev', trim: true, description: 'Runtime profile')
+        string(name: 'REPOSITORY', defaultValue: 'registry.example.com', trim: true, description: 'Container registry')
+        string(name: 'HUB_NAME', defaultValue: 'team', trim: true, description: 'Container registry namespace')
+        string(name: 'SOURCE_REPO_URL', defaultValue: '', trim: true, description: 'Injected source repository URL')
+        string(name: 'DEPLOY_REPO_URL', defaultValue: '', trim: true, description: 'Injected deployment repository URL')
+        string(name: 'MANIFEST_PATH', defaultValue: '', trim: true, description: 'Path to the rendered manifest in deploy repository')
+    }
+
+    environment {
+        DOCKER_ACCESS_KEY = credentials('container-registry-credentials')
+        GIT_CREDENTIALS_ID = 'git-credentials'
+    }
+
+    stages {
+        stage('Source Git Clone') {
+            steps {
+                dir('source') {
+                    deleteDir()
+                    git branch: params.BRANCH, credentialsId: env.GIT_CREDENTIALS_ID, url: params.SOURCE_REPO_URL
+                }
+            }
+        }
+
+        stage('Package') {
+            steps {
+                sh '''
+                    set -eu
+                    PACKAGE_OUTPUT="${WORKSPACE}/source/package-output"
+                    rm -rf "$PACKAGE_OUTPUT"
+                    mkdir -p "$PACKAGE_OUTPUT"
+                    cd "${WORKSPACE}/source"
+                    docker build --pull \
+                      -f docker/Dockerfile.package \
+                      --target package \
+                      --output "type=local,dest=$PACKAGE_OUTPUT" .
+                '''
+            }
+        }
+
+        stage('Image Build And Publish') {
+            steps {
+                sh '''
+                    set -eu
+                    IMAGE="${REPOSITORY}/${HUB_NAME}/${MODULE_NAME}:v_${BUILD_NUMBER}"
+                    printf '%s' "$DOCKER_ACCESS_KEY_PSW" | docker login "$REPOSITORY" -u "$DOCKER_ACCESS_KEY_USR" --password-stdin
+                    docker build --pull \
+                      -f "${WORKSPACE}/source/docker/Dockerfile" \
+                      --build-arg GIT_COMMIT_ID="$(cd "${WORKSPACE}/source" && git rev-parse HEAD)" \
+                      --build-arg MODULE_NAME="$MODULE_NAME" \
+                      -t "$IMAGE" "${WORKSPACE}/source/package-output"
+                    docker push "$IMAGE"
+                    docker rmi -f "$IMAGE"
+                '''
+            }
+        }
+
+        stage('Deploy') {
+            when {
+                expression { params.DEPLOY_REPO_URL?.trim() && params.MANIFEST_PATH?.trim() }
+            }
+            steps {
+                dir('deploy') {
+                    deleteDir()
+                    git branch: 'main', credentialsId: env.GIT_CREDENTIALS_ID, url: params.DEPLOY_REPO_URL
+                    sh '''
+                        set -eu
+                        test -f "$MANIFEST_PATH"
+                        sed -i "s/@BUILD_NUMBER/${BUILD_NUMBER}/g; s/@SPRING_PROFILES_ACTIVE/${SPRING_PROFILES_ACTIVE}/g" "$MANIFEST_PATH"
+                        grep -q "v_${BUILD_NUMBER}" "$MANIFEST_PATH"
+                    '''
+                }
+            }
+        }
+    }
+}

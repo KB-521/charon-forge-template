@@ -1,0 +1,23 @@
+node_modules/
+.pnpm-store/
+dist/
+coverage/
+.tmp/
+package-output/
+server/public/
+*.tsbuildinfo
+*.log
+
+.env
+.env.*
+!.env.example
+.aliyun
+
+.DS_Store
+.idea/
+.vscode/
+
+ai-workflow/memory/LOCAL.md
+
+# Local file logging
+log/

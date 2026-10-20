@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "id": "vite-nestjs",
+  "version": "0.1.0",
+  "name": "Vite + React + NestJS",
+  "category": "fullstack",
+  "layout": "monorepo",
+  "tags": ["vite", "react", "nestjs", "typescript", "pnpm", "monorepo"],
+  "minCliVersion": "0.1.0",
+  "source": "files",
+  "inputs": {
+    "projectName": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "render": {
+    "tokens": {
+      "__PROJECT_NAME__": "projectName"
+    },
+    "files": [
+      "package.json",
+      "web/package.json",
+      "server/package.json",
+      "README.md",
+      "web/index.html",
+      "web/src/App.tsx",
+      "server/src/health/health.controller.ts",
+      "docker/Jenkinsfile"
+    ]
+  },
+  "publish": {
+    "include": ["**/*"]
+  },
+  "requirements": [
+    {
+      "tool": "node",
+      "range": ">=22.12.0",
+      "phase": "install"
+    },
+    {
+      "tool": "pnpm",
+      "range": "10.18.3",
+      "phase": "install"
+    },
+    {
+      "tool": "node",
+      "range": ">=22.12.0",
+      "phase": "verify"
+    },
+    {
+      "tool": "pnpm",
+      "range": "10.18.3",
+      "phase": "verify"
+    }
+  ],
+  "install": {
+    "adapter": "node",
+    "packageManagers": ["pnpm"]
+  },
+  "verify": [
+    {
+      "argv": ["pnpm", "install", "--frozen-lockfile"]
+    },
+    {
+      "argv": ["pnpm", "typecheck"]
+    },
+    {
+      "argv": ["pnpm", "build"]
+    },
+    {
+      "argv": ["pnpm", "package"]
+    }
+  ]
+}

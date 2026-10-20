@@ -1,6 +1,6 @@
 # Charon Forge
 
-多技术栈项目模板仓库与 CLI 框架。当前提供 [Next.js + Ant Design 模板](templates/web/nextjs/README.md)，其它技术栈可由维护者继续编写或导入。
+多技术栈项目模板仓库与 CLI 框架。当前提供 [Next.js + Ant Design 模板](templates/web/nextjs/README.md)和 [Vite + React + NestJS 前后端模板](templates/fullstack/vite-nestjs/README.md)，其它技术栈可由维护者继续编写或导入。
 
 使用 Node.js 22.12+ 与 pnpm 10.18.3：
 
