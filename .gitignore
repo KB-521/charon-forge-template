@@ -9,6 +9,8 @@ coverage/
 !.env.example
 !/templates/web/nextjs/files/docker-config/.env.dev
 !/templates/web/nextjs/files/docker-config/.env.prod
+!/templates/web/umi/files/docker-config/.env.dev
+!/templates/web/umi/files/docker-config/.env.prod
 ai-workflow/memory/LOCAL.md
 .next/
 .dart_tool/

@@ -1,6 +1,6 @@
 # Charon Forge
 
-多技术栈项目模板仓库与 CLI 框架。当前提供 [Next.js + Ant Design 模板](templates/web/nextjs/README.md)、[Vite + React + NestJS 前后端模板](templates/fullstack/vite-nestjs/README.md)和 [Java / Spring Boot 模板](templates/server/java/README.md)。其它技术栈可由维护者继续编写或导入。
+多技术栈项目模板仓库与 CLI 框架。当前提供 [Next.js + Ant Design 模板](templates/web/nextjs/README.md)、[Umi Max + React + Ant Design 模板](templates/web/umi/README.md)、[Vite + React + NestJS 前后端模板](templates/fullstack/vite-nestjs/README.md)和 [Java / Spring Boot 模板](templates/server/java/README.md)。其它技术栈可由维护者继续编写或导入。
 
 使用 Node.js 22.12+ 与 pnpm 10.18.3：
 
@@ -43,6 +43,14 @@ pnpm release
 - [独立开发与测试](docs/template-development.md)
 - [CLI 参数与失败恢复](docs/cli-usage.md)
 - [分发配置与发布准备](docs/releasing.md)
+
+AI 初始化工程可使用独立技能 [charon-forge-init](.codex/skills/charon-forge-init/SKILL.md)。将整个 `.codex/skills/charon-forge-init` 目录复制到 AI 工具支持的技能目录（例如 `~/.codex/skills/`），即可在其它项目中调用：
+
+```text
+用 charon-forge-init 初始化 Next.js 项目 my-admin，放到 ../my-admin，并安装依赖。
+```
+
+技能支持 npm 分发与指定本地模板仓库；本仓库内现有的 `$init` 仍用于协作文档初始化。技能不会随 npm CLI 包自动安装。
 
 根目录是唯一 CLI 工具包，`cli/src/core/` 是内部生成核心，`schemas/` 是协议事实源，`scripts/` 管理维护命令。应用模板保留各自原生结构和依赖，不加入根 workspace。
 

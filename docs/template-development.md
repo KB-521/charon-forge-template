@@ -19,4 +19,6 @@ pnpm verify:templates --template my-template --native
 
 实际应用的服务健康检查、锁定安装、平台构建由模板作者补充 verify 和适用 runner。Next.js 与 Vite + NestJS 模板的声明验证已在本机隔离工程中执行；后者还包含独立包运行和前后端代理的 HTTP 验证。Java 模板以 manual 安装适配器保留 Maven 工程，需显式选择 JDK 8，依赖从 Maven Central 获取；已在本机隔离工程完成公共依赖构建、5 项集成测试与两个独立 jar 的 HTTP 检查。POSIX 下可执行 `pnpm verify:templates --template java --native`，Windows 生成工程请使用 Maven 原生命令。Docker、其它平台与线上运行以各模板的实际验收结果为准。
 
+Umi 模板使用公开 npm 依赖与 pnpm 冻结安装，已在仓库外通过 @charonix/eslint-config 零警告 lint、类型检查、13 项测试、生产构建、11 组演示模式和 5 组 API/运行时浏览器检查，以及开发服务深链接检查。四模板生成与防污染检查通过；Docker daemon 不可用，镜像构建未实测。详情见 [Umi 验证记录](../ai-workflow/sdd/changes/20261021-umi-template/validation.md)。
+
 正式增量发布使用 `pnpm release`，自动检测变化并只验证选中模板；运行时可覆盖归档版本，不回写基础模板。详见[发布说明](releasing.md)。

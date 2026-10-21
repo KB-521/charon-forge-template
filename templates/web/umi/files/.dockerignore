@@ -1,0 +1,10 @@
+node_modules
+dist
+src/.umi*
+.git
+.env
+.env.*
+*.log
+docker-config/.env*
+!docker-config/.env.dev
+!docker-config/.env.prod
