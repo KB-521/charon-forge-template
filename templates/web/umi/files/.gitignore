@@ -1,0 +1,13 @@
+node_modules/
+dist/
+src/.umi*/
+.umi*/
+.cache/
+*.log
+.env
+.env.*
+!docker-config/.env.dev
+!docker-config/.env.prod
+.DS_Store
+.idea/
+.vscode/

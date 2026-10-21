@@ -1,0 +1,56 @@
+.form-item {
+  min-width: 150px;
+  margin: 5px;
+}
+
+.filters-wrap {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  padding: 8px 0;
+  margin: auto -5px;
+}
+
+.filters-row {
+  margin: 5px 0;
+}
+
+.filters-options {
+  margin-right: 5px;
+  margin-left: auto;
+}
+
+.table-wrap {
+  margin-top: 5px;
+}
+
+.options-row {
+  margin: 5px 0 10px;
+}
+
+.wrap {
+  padding: 18px;
+  background: #fff;
+  border: 1px solid #edf0f4;
+  border-radius: 10px;
+}
+.top-wrap {
+  background: #fff;
+}
+.top-content {
+  padding-bottom: 8px;
+}
+.select-alert-wrap {
+  margin: 8px 0;
+}
+.pagination-wrap {
+  background: #fff;
+}
+@media (max-width: 640px) {
+  .wrap {
+    padding: 10px;
+  }
+  .pagination-wrap {
+    position: static !important;
+  }
+}

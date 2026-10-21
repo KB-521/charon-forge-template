@@ -1,0 +1,48 @@
+{
+  "name": "__PROJECT_NAME__",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.18.3",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "pnpm config:runtime && max dev",
+    "start": "pnpm dev",
+    "setup": "max setup",
+    "postinstall": "max setup",
+    "config:runtime": "node --env-file=docker-config/.env.dev --env-file-if-exists=docker-config/.env.local scripts/runtime-config.mjs",
+    "typecheck": "max setup && tsc --noEmit",
+    "test": "node --experimental-strip-types --test tests/*.test.ts",
+    "build": "pnpm config:runtime:prod && max build",
+    "preview": "node scripts/preview.mjs",
+    "config:runtime:prod": "node --env-file=docker-config/.env.prod --env-file-if-exists=docker-config/.env.local scripts/runtime-config.mjs",
+    "lint": "eslint . --max-warnings=0",
+    "lint:fix": "eslint . --fix"
+  },
+  "dependencies": {
+    "@ant-design/icons": "5.6.1",
+    "@ant-design/pro-components": "2.8.10",
+    "@umijs/max": "4.7.25",
+    "ahooks": "3.10.0",
+    "antd": "5.29.3",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@charonix/eslint-config": "1.2.0",
+    "@types/node": "22.20.5",
+    "@types/react": "18.3.31",
+    "@types/react-dom": "18.3.7",
+    "eslint": "9.39.1",
+    "tailwindcss": "3.4.19",
+    "typescript": "5.9.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "@swc/core",
+      "core-js"
+    ]
+  }
+}

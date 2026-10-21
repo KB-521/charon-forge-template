@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "id": "umi",
+  "version": "0.1.0",
+  "name": "Umi Max + React + Ant Design",
+  "category": "web",
+  "layout": "single",
+  "tags": [
+    "umi",
+    "react",
+    "antd",
+    "typescript",
+    "admin"
+  ],
+  "minCliVersion": "0.1.0",
+  "source": "files",
+  "inputs": {
+    "projectName": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "render": {
+    "tokens": {
+      "__PROJECT_NAME__": "projectName"
+    },
+    "files": [
+      "package.json",
+      "README.md",
+      "config/defaultSettings.ts",
+      "public/runtime-config.js",
+      "scripts/runtime-config.mjs",
+      "docker-config/.env.dev",
+      "docker-config/.env.prod"
+    ]
+  },
+  "publish": {
+    "include": [
+      "**/*"
+    ]
+  },
+  "requirements": [
+    {
+      "tool": "node",
+      "range": ">=22.12.0",
+      "phase": "install"
+    },
+    {
+      "tool": "pnpm",
+      "range": "10.18.3",
+      "phase": "install"
+    },
+    {
+      "tool": "node",
+      "range": ">=22.12.0",
+      "phase": "verify"
+    },
+    {
+      "tool": "pnpm",
+      "range": "10.18.3",
+      "phase": "verify"
+    }
+  ],
+  "install": {
+    "adapter": "node",
+    "packageManagers": [
+      "pnpm"
+    ]
+  },
+  "verify": [
+    {
+      "argv": [
+        "pnpm",
+        "install",
+        "--frozen-lockfile"
+      ]
+    },
+    {
+      "argv": [
+        "pnpm",
+        "lint"
+      ]
+    },
+    {
+      "argv": [
+        "pnpm",
+        "typecheck"
+      ]
+    },
+    {
+      "argv": [
+        "pnpm",
+        "test"
+      ]
+    },
+    {
+      "argv": [
+        "pnpm",
+        "build"
+      ]
+    }
+  ]
+}
