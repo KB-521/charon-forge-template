@@ -240,6 +240,9 @@ export async function stageProject(
           fail('E_RENDER', 'render', `二进制或 BOM 渲染文件：${path}`);
         bytes = Buffer.from(renderText(text, path));
       } else if (hasToken) fail('E_RENDER', 'render', `token 文件未列入 render.files：${path}`);
+      // Resolve pnpm dependencies on the destination machine, including nested workspaces.
+      // Validate every archive entry above before excluding its lockfile from generation.
+      if (outputPath.split('/').at(-1)?.toLowerCase() === 'pnpm-lock.yaml') continue;
       const destination = join(stage, outputPath);
       await mkdir(dirname(destination), { recursive: true });
       await writeFile(destination, bytes, { flag: 'wx', mode: entry.mode });

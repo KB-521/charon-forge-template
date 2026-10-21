@@ -22,7 +22,7 @@ pnpm template:dev --template nextjs --output ../nextjs-dev --name my-next-app
 
 ```sh
 corepack enable
-pnpm install --frozen-lockfile
+pnpm install --no-frozen-lockfile
 pnpm dev
 ```
 

@@ -1,6 +1,6 @@
 {
   "name": "create-charon-forge",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A metadata-driven project template generator",
   "repository": {
     "type": "git",
@@ -9,9 +9,9 @@
   "type": "module",
   "license": "UNLICENSED",
   "engines": {
-    "node": ">=22.12.0"
+    "node": ">=22.12.0",
+    "pnpm": ">=10.18.3"
   },
-  "packageManager": "pnpm@10.18.3",
   "bin": {
     "create-charon-forge": "dist/cli/index.js"
   },

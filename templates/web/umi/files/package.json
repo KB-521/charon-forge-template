@@ -4,7 +4,8 @@
   "private": true,
   "packageManager": "pnpm@10.18.3",
   "engines": {
-    "node": ">=22.12.0"
+    "node": ">=22.12.0",
+    "pnpm": ">=10.18.3 <11"
   },
   "scripts": {
     "dev": "pnpm config:runtime && max dev",

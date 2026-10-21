@@ -34,7 +34,7 @@
     "packageManagers": ["pnpm"]
   },
   "verify": [
-    { "argv": ["pnpm", "install", "--frozen-lockfile"] },
+    { "argv": ["pnpm", "install", "--no-frozen-lockfile"] },
     { "argv": ["pnpm", "lint"] },
     { "argv": ["pnpm", "typecheck"] },
     { "argv": ["pnpm", "build"] }

@@ -7,9 +7,11 @@ Next.js App Router 项目，使用 TypeScript、Tailwind CSS 和 Ant Design。�
 - Node.js 22.12+
 - pnpm 10.18.3（packageManager 已固定）
 
+生成项目不携带模板的 pnpm-lock.yaml（包含子包）；首次安装按本机平台和 package.json 重新解析依赖并生成自己的锁文件。后续可提交新锁文件用于项目自身的可重复构建。
+
 ```sh
 corepack enable
-pnpm install --frozen-lockfile
+pnpm install --no-frozen-lockfile
 pnpm dev
 ```
 

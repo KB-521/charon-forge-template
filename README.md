@@ -37,6 +37,8 @@ pnpm release
 | `pnpm verify:distribution`                                                                         | 实际 npm tarball 的仓库外安装与 CLI 检查；会联网安装运行依赖             |
 | `pnpm release` / `pnpm release --dry-run`                                                          | 交互增量发布 / 只检测变化并预览                                          |
 
+生成工程统一省略 `pnpm-lock.yaml`（含子包），pnpm 使用 `install --no-frozen-lockfile` 在本机解析依赖并生成项目锁文件。模板仓库的锁文件保留作维护基线，根 CLI 工具包继续冻结安装。
+
 模板首次导入后，先审查 `template.json`、源码和发布文件，再将目标模板纳入 Git。框架不会自动暂存文件，不在模板基础目录安装依赖，不自动同步开发工程。
 
 - [模板编写与导入](docs/template-contributing.md)

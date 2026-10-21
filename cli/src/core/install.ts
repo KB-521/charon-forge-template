@@ -67,7 +67,7 @@ export function installArgv(
     tool: selected,
     args:
       selected === 'pnpm'
-        ? ['install', '--frozen-lockfile']
+        ? ['install', '--no-frozen-lockfile']
         : selected === 'npm'
           ? ['ci']
           : ['install', '--immutable'],

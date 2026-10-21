@@ -60,7 +60,7 @@
   },
   "verify": [
     {
-      "argv": ["pnpm", "install", "--frozen-lockfile"]
+      "argv": ["pnpm", "install", "--no-frozen-lockfile"]
     },
     {
       "argv": ["pnpm", "typecheck"]

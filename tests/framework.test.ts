@@ -268,9 +268,47 @@ test('installation is fixed argv and failures preserve already-generated files',
       }),
       code('E_INSTALL'),
     );
-    assert.deepEqual(calls[0]?.args, ['install', '--frozen-lockfile']);
+    assert.deepEqual(calls[0]?.args, ['install', '--no-frozen-lockfile']);
     assert.equal(calls[0]?.cwd, target);
     assert.equal(await readFile(join(target, 'README.md'), 'utf8'), '# sample-app\n');
+  } finally {
+    await f.cleanup();
+  }
+});
+
+test('generation omits pnpm lockfiles from every package while preserving archive and source', async () => {
+  const f = await fixture();
+  try {
+    const lockfiles = ['pnpm-lock.yaml', 'web/pnpm-lock.yaml', 'server/PnPm-LoCk.YaMl'];
+    for (const path of lockfiles) {
+      await mkdir(join(f.directory, 'files', path, '..'), { recursive: true });
+      await writeFile(join(f.directory, 'files', path), 'lockfileVersion: 9.0\n');
+    }
+    await writeFile(join(f.directory, 'files/package-lock.json'), '{}\n');
+    await writeFile(join(f.directory, 'files/pnpm-lock.yaml.keep'), 'keep\n');
+    execFileSync('git', ['add', 'templates'], { cwd: f.root });
+    const archive = join(f.root, 'with-locks.tgz');
+    const packed = await packTemplate(f.root, f.directory, archive);
+    assert.ok(lockfiles.every((path) => packed.files.includes(`files/${path}`)));
+    const stage = await stageProject(archive, packed.digest, { projectName: 'sample-app' }, f.root);
+    const stagedPaths = stage.files.map((file) => file.path);
+    assert.ok(lockfiles.every((path) => !stagedPaths.includes(path)));
+    const target = await commitProject(
+      stage,
+      join(f.root, 'unlocked-project'),
+      record(packed.digest),
+    );
+    for (const path of lockfiles) {
+      await assert.rejects(readFile(join(target, path)), { code: 'ENOENT' });
+      assert.equal(
+        await readFile(join(f.directory, 'files', path), 'utf8'),
+        'lockfileVersion: 9.0\n',
+      );
+    }
+    assert.equal(await readFile(join(target, 'package-lock.json'), 'utf8'), '{}\n');
+    assert.equal(await readFile(join(target, 'pnpm-lock.yaml.keep'), 'utf8'), 'keep\n');
+    const after = await packTemplate(f.root, f.directory, join(f.root, 'with-locks-after.tgz'));
+    assert.equal(packed.digest, after.digest);
   } finally {
     await f.cleanup();
   }

@@ -8,3 +8,5 @@
 - 提供公开运行时 allowlist、静态预览与 nginx/Docker 示例；真实环境和运行产物不分发。
 - 按用户要求移除 .env.example，保留 docker-config/.env.dev、.env.prod 并接入开发/生产配置生成；.env.local 仅作本地覆盖，不分发。
 - 安装 @charonix/eslint-config@1.2.0 与 ESLint 9，启用 React/TypeScript/Tailwind 规则，整理源码并将零警告 lint 纳入原生验证。
+
+- 生成项目统一省略 pnpm-lock.yaml，安装/验证使用 --no-frozen-lockfile，在本机重新生成锁文件；同步安装和 Docker 说明。

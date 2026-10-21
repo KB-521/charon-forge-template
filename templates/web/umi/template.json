@@ -72,7 +72,7 @@
       "argv": [
         "pnpm",
         "install",
-        "--frozen-lockfile"
+        "--no-frozen-lockfile"
       ]
     },
     {

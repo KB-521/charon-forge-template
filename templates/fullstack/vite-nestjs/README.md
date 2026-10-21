@@ -13,7 +13,7 @@ pnpm template:dev --template vite-nestjs --output ../vite-nestjs-dev --name my-f
 进入生成目录后：
 
 ```sh
-pnpm install --frozen-lockfile
+pnpm install --no-frozen-lockfile
 pnpm dev
 ```
 

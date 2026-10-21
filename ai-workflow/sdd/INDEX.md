@@ -2,6 +2,7 @@
 
 | Change ID | 主题 | 当前阶段 | 入口 |
 | --- | --- | --- | --- |
+| 20261021-template-local-lockfile | 所有模板省略 pnpm 锁文件并在本机解析依赖 | 已完成；35 项框架测试、4 模板生成和 3 个 Node 模板无锁 CI 原生验证通过；未发布 | [入口](changes/20261021-template-local-lockfile/INDEX.md) |
 | 20261021-umi-template | Umi Max Web 后台标准模板迁移 | 已完成；零警告 lint、13 项测试、16 组浏览器检查及四模板生成防污染通过；Docker 未实测，未提交/发布 | [入口](changes/20261021-umi-template/INDEX.md) |
 | 20261020-java-template | 第三个 Java / Spring Boot 六模块标准模板 | 公共模板验收通过；发布 workflow 已补条件 JDK 8，本地校验通过，待新 Actions 验证 | [变更入口](changes/20261020-java-template/INDEX.md) |
 | 20261020-vite-nestjs-template | Vite + React / NestJS 前后端标准模板迁移 | 已完成；补齐通用组件、日志与 OSS；原生验证及新增 12 项后端/10 组浏览器检查通过；Docker 未实测，未提交/发布 | [变更入口](changes/20261020-vite-nestjs-template/INDEX.md) |

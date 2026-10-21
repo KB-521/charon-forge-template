@@ -92,6 +92,7 @@
 - 新增或调整技能时，按 `common/init-skills/SKILL.md` 维护技能索引；仅初始化 agent 时不额外刷新其它产物。
 - CLI 使用 TypeScript 严格模式、ESM 与 Prettier；模块通过 `.js` 扩展名引用。schema 类型从 JSON 真源生成，工具源码和模板负载分开验证。
 - 不在模板 `files/` 内安装、运行或自动回写；已跟踪文件与 include 构成发布输入，运行产物禁止项独立于 `.gitignore` 检查。
+- 所有模板生成时省略 `pnpm-lock.yaml`（含子包），pnpm 安装使用 `--no-frozen-lockfile`，由本机生成项目锁文件；模板源码/归档中的锁文件可保留作维护基线，根 CLI 工具包仍使用冻结安装。
 - 模板可通过 `render.paths` 显式声明随输入命名的文件/目录，要求 CLI 0.1.2+；内容渲染清单仍写基础模板原路径。
 - Umi 模板使用 Umi Max / React / Ant Design，默认浏览器演示数据；API 和上传通过公开配置或回调接入。`src/.umi*` 属于生成产物，不回写模板；运行时配置只包含公开字段。
 - Java 模板使用公开 Spring Boot parent 与公共 MyBatis/MySQL 依赖，使用 manual 安装适配器；原生构建需要 Maven 实际运行在 JDK 8 上，默认 local 不连接数据库，H2 仅用于测试。构建与运行边界见模板 README。
