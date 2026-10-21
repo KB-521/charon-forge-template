@@ -12,7 +12,7 @@ Next 配置保留 local/test/production 环境切换、各环境 API 代理/CDN 
 
 ## 生成与开发
 
-Node.js 22.12+、pnpm 10.18.3。先审查并将模板纳入 Git，再在仓库根目录执行：
+Node.js 22.12+、pnpm >=10.18.3 <11。先审查并将模板纳入 Git，再在仓库根目录执行：
 
 ```sh
 pnpm template:dev --template nextjs --output ../nextjs-dev --name my-next-app

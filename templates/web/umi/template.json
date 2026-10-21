@@ -47,7 +47,7 @@
     },
     {
       "tool": "pnpm",
-      "range": "10.18.3",
+      "range": ">=10.18.3 <11",
       "phase": "install"
     },
     {
@@ -57,7 +57,7 @@
     },
     {
       "tool": "pnpm",
-      "range": "10.18.3",
+      "range": ">=10.18.3 <11",
       "phase": "verify"
     }
   ],

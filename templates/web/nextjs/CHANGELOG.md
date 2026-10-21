@@ -13,3 +13,5 @@
 - 迁移 docker-config/.env.dev、.env.prod 的公开配置机制，兼容 SPRING_PROFILES_ACTIVE，恢复只读 window.CONFIG 与 request 的运行时 BASE_URL；使用 Node 配置路由和 beforeInteractive 适配 Next 服务模式。
 
 - 生成项目统一省略 pnpm-lock.yaml，安装/验证使用 --no-frozen-lockfile，在本机重新生成锁文件；同步安装和 Docker 说明。
+
+- 本机 pnpm 要求改为 >=10.18.3 <11，移除 packageManager 精确固定；CI 和 Docker 保留明确的验证版本。

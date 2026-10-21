@@ -25,9 +25,9 @@
   },
   "requirements": [
     { "tool": "node", "range": ">=22.12.0", "phase": "install" },
-    { "tool": "pnpm", "range": "10.18.3", "phase": "install" },
+    { "tool": "pnpm", "range": ">=10.18.3 <11", "phase": "install" },
     { "tool": "node", "range": ">=22.12.0", "phase": "verify" },
-    { "tool": "pnpm", "range": "10.18.3", "phase": "verify" }
+    { "tool": "pnpm", "range": ">=10.18.3 <11", "phase": "verify" }
   ],
   "install": {
     "adapter": "node",

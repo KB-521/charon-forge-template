@@ -106,8 +106,12 @@ Pages 临时 artifact 按 run ID 和 run attempt 唯一命名，上传与部署�
 npm create charon-forge@latest
 ```
 
-随后选择分类、模板、目录与是否安装依赖。目标目录必须不存在；原生 SDK 和包管理器要求由所选模板决定。当前 Next.js 模板使用 pnpm 10.18.3。
+随后选择分类、模板、目录与是否安装依赖。目标目录必须不存在；原生 SDK 和包管理器要求由所选模板决定。当前 Node 模板使用本机 pnpm >=10.18.3 <11，不通过 packageManager 固定小版本。
 
 本实现不代表 GitHub Pages、npm 账号或公开下载入口已经配置或发布成功。外部流程以首次实际 Actions 运行结果为准。
 
 参考：[GitHub Pages workflow](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)、[npm Trusted Publisher](https://docs.npmjs.com/trusted-publishers/)。
+
+## CI 与本机 pnpm 版本
+
+pnpm/action-setup@v4 在没有 packageManager 字段时必须显式提供 with.version；engines.pnpm 只是兼容范围，不是该 Action 的版本来源。本仓库四个 workflow 显式使用 10.18.3，不依赖根 packageManager。模板 requirements 与 engines.pnpm 使用 >=10.18.3 <11，本机如 10.19.x 可通过，不要求恰好 10.18.3；10.18.3 以下或 11.x 不属于当前模板声明范围。CI/Docker 的固定版本不约束本机版本。

@@ -313,3 +313,48 @@ test('generation omits pnpm lockfiles from every package while preserving archiv
     await f.cleanup();
   }
 });
+
+test('Node templates accept compatible local pnpm versions and reject unsupported versions before install', async () => {
+  const root = await temporary();
+  try {
+    for (const name of ['web/nextjs', 'web/umi', 'fullstack/vite-nestjs']) {
+      const template = validateTemplate(
+        JSON.parse(
+          await readFile(new URL(`../templates/${name}/template.json`, import.meta.url), 'utf8'),
+        ),
+      );
+      const pkg = JSON.parse(
+        await readFile(new URL(`../templates/${name}/files/package.json`, import.meta.url), 'utf8'),
+      );
+      assert.equal(pkg.packageManager, undefined);
+      assert.ok(
+        template.requirements
+          .filter((req) => req.tool === 'pnpm')
+          .every((req) => req.range === pkg.engines.pnpm),
+      );
+      for (const version of ['10.18.3', '10.19.0', '10.99.0', '10.18.2', '9.15.0', '11.0.0']) {
+        const installs: string[][] = [];
+        const run = () =>
+          installProject(template, root, 'pnpm', async (command, args) => {
+            if (args[0] === '--version')
+              return { code: 0, output: command === process.execPath ? 'v22.12.0' : version };
+            installs.push(args);
+            return { code: 0, output: '' };
+          });
+        if (['10.18.3', '10.19.0', '10.99.0'].includes(version)) {
+          await run();
+          assert.deepEqual(
+            installs,
+            [['install', '--no-frozen-lockfile']],
+            `${name}: pnpm ${version}`,
+          );
+        } else {
+          await assert.rejects(run, code('E_TOOL'));
+          assert.deepEqual(installs, [], `${name}: pnpm ${version}`);
+        }
+      }
+    }
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});

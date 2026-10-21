@@ -49,7 +49,7 @@ pnpm template:import --source ../existing-project --id web-my-app --category web
 导入后必须检查：
 
 1. `files/README.md` 写清实际工具版本、安装、启动、构建、测试及必要配置；没有 README 时自行补充。
-2. `requirements` 分 install/verify；版本范围使用 SemVer 语义。框架自动安装只支持 node、npm/pnpm/yarn、uv 的检测；不支持的工具用 manual 和原生说明。
+2. `requirements` 分 install/verify；版本范围使用 SemVer 语义。框架自动安装只支持 node、npm/pnpm/yarn、uv 的检测；不支持的工具用 manual 和原生说明。当前 Node 模板的 pnpm requirements 与 engines.pnpm 均使用 >=10.18.3 <11；不写 packageManager 精确固定。CI 安装 Action 另显式指定已验证的版本。
 3. Node 适配器的 packageManagers 只声明可验证的工具。pnpm 使用 install --no-frozen-lockfile，新工程统一省略所有 pnpm-lock.yaml（含子包），由本机重新解析并生成锁文件；仓库/归档中的 pnpm 锁文件可保留作维护基线。npm 使用 ci，yarn 使用 immutable，有相应锁文件才启用。Python uv 默认禁止下载系统 Python，先准备所需 Python。
 4. `verify` 是受信任的维护者命令数组，在独立工程内执行；不由公开 CLI 自动运行。不要写真实密钥，不把后台常驻服务作为不会退出的 verify 步骤。
 5. 归档由 include 与 Git 跟踪文件的交集组成；include 命中未跟踪文件会报错，已跟踪污染文件即使命中排除范围也会报错。必要新增文件先审查并手工纳入 Git。

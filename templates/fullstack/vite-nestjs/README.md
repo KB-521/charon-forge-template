@@ -4,7 +4,7 @@
 
 模板 ID：`vite-nestjs`；分类：`fullstack`；布局：`monorepo`；初始版本：0.1.0。
 
-使用 Node.js 22.12+、pnpm 10.18.3。审查并将模板纳入 Git 后，在仓库根目录执行：
+使用 Node.js 22.12+、pnpm >=10.18.3 <11。审查并将模板纳入 Git 后，在仓库根目录执行：
 
 ```sh
 pnpm template:dev --template vite-nestjs --output ../vite-nestjs-dev --name my-fullstack-app

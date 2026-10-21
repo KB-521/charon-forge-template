@@ -3,7 +3,7 @@
 第四个标准模板，来自既有 Umi Max 后台工程，保留原生 Umi Max 4 / React 18 / Ant Design 5 / Pro Components 2，并提取通用表格、上传、字典、导出和工具能力。
 
 - ID umi；分类 web；布局 single；版本 0.1.0。
-- Node 22.12+、pnpm 10.18.3；node/pnpm 适配器，新工程由本机生成锁文件。
+- Node 22.12+、pnpm >=10.18.3 <11；node/pnpm 适配器，新工程由本机生成锁文件。
 - 项目名渲染包名、默认布局、docker-config 开发/生产公开配置、运行时配置及工程 README。
 - ESLint 使用 @charonix/eslint-config@1.2.0；提供 lint / lint:fix，原生 verify 包含零警告 lint。
 - 默认浏览器演示数据，开发和静态构建均无需后端；API/上传可配置接入。
