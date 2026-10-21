@@ -62,3 +62,11 @@
 按配置整理导入/格式，给默认数组属性提供稳定常量、命名 Excel hook、移除遗留调试输出及不再必要的 ts-ignore，改用普通 enum；Node 脚本显式导入 process。保留 Node 原生测试，单独关闭 Vitest 的 test/no-import-node-test 导入替换规则；只忽略生成目录、生成的 runtime-config.js 和 Markdown，不关闭其余规则迁就错误。之后以 ESLint 作为此模板源码格式事实源，避免 Prettier 覆盖。
 
 重新通过四模板描述校验（Umi 60 项）、Umi 原生隔离验证（冻结安装、lint、类型检查、13 项测试、build、防污染）；重新运行 11 组生产浏览器检查通过。构建后的再次 lint 通过，确认配置生成不会使 lint 失败。源工程与真实 index 摘要不变，docker-config/.env.dev/.env.prod 保留，未恢复 .env.example。上游 Umi 内置旧 ESLint/TypeScript 插件存在 peer 提示；实际命令使用显式安装的 ESLint 9 和 charon 配置，检查通过。
+
+## CI 修复：package.json 末尾换行
+
+用户报告以 --template-version 0.1.1 原生验证时，安装完成后 lint 的 style/eol-last 报错。确认模板源 files/package.json 最后一个字节为 `}`，缺少 LF；生成核心保留文件内容，安装和 ESLint 规则不需要绕过。
+
+仅在模板源 package.json 补一个 LF，不改变 JSON 数据、依赖、版本或命令；根工具包和其它模板不作无关格式修改。没有新增镜像式测试或关闭规则，使用仓库外实际生成/原生验证确认发布路径。
+
+复验命令：CI=true pnpm exec tsx scripts/verify-templates.ts --template umi --template-version 0.1.1 --native。复验通过：安装、零警告 lint、类型检查、13 项测试、生产构建、生成/防污染全部成功。JSON 数据与 HEAD 完全相同，仅追加一个 LF；git diff --check 通过。本次 Agent implementation-executor，skill req-dev；Memory/Router/索引已读取，无 subagent，未提交或发布。

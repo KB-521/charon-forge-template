@@ -12,3 +12,5 @@
 - 生成项目统一省略 pnpm-lock.yaml，安装/验证使用 --no-frozen-lockfile，在本机重新生成锁文件；同步安装和 Docker 说明。
 
 - 本机 pnpm 要求改为 >=10.18.3 <11，移除 packageManager 精确固定；CI 和 Docker 保留明确的验证版本。
+
+- 补齐 package.json 末尾换行，修复发布隔离工程的 style/eol-last 错误；以模板版本 0.1.1 完成原生复验。
